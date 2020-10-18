@@ -1,23 +1,23 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Meta from "vue-meta";
+import NProgress from "nprogress";
+const PageTransaction = () => import("../views/PageTransaction.vue");
+const PageDesktop = () => import("../views/PageDesktop.vue");
 
 Vue.use(VueRouter);
+Vue.use(Meta);
 
 const routes = [
   {
     path: "/",
-    name: "Home",
-    component: Home
+    name: "PageDesktop",
+    component: PageDesktop
   },
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
+    path: "/page-transaction",
+    name: "PageTransaction",
+    component: PageTransaction
   }
 ];
 
@@ -25,6 +25,16 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+router.beforeEach((routeTo, routeFrom, next) => {
+  NProgress.start();
+
+  next();
+});
+
+router.afterEach(() => {
+  NProgress.done();
 });
 
 export default router;
